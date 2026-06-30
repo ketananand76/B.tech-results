@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pooja Kumari — 3D Animation & Graphics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E0F12;
+    --bg-soft:#15171B;
+    --card:#1C1F25;
+    --card-border:#2A2D33;
+    --cream:#F5F1E8;
+    --cream-dim:#A8A6A0;
+    --amber:#FF6B35;
+    --amber-dim:#7A3D24;
+    --green:#5FCB8C;
+    --red:#E2574C;
+    --mono:'JetBrains Mono', monospace;
+    --display:'Space Grotesk', sans-serif;
+    --body:'Inter', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--cream);
+    font-family:var(--body);
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  a{color:inherit;}
+
+  /* sprocket strip background texture */
+  .sprocket-row{
+    display:flex;
+    justify-content:space-between;
+    padding:0 24px;
+    height:14px;
+  }
+  .sprocket-row span{
+    width:8px; height:8px;
+    background:var(--bg);
+    border-radius:2px;
+  }
+  .sprocket-top{background:var(--bg-soft);}
+  .sprocket-bottom{background:var(--bg-soft);}
+
+  header{
+    padding:90px 6vw 60px;
+    background:var(--bg-soft);
+    position:relative;
+    border-bottom:1px solid var(--card-border);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--amber);
+    margin-bottom:18px;
+  }
+  h1{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:clamp(2.4rem, 6vw, 4.6rem);
+    letter-spacing:-0.02em;
+    line-height:1.02;
+  }
+  .role{
+    font-family:var(--display);
+    font-size:clamp(1.1rem, 2.2vw, 1.5rem);
+    color:var(--cream-dim);
+    margin-top:14px;
+    font-weight:500;
+  }
+  .hero-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:40px;
+    margin-top:48px;
+  }
+  .meta-block{font-family:var(--mono);}
+  .meta-block .label{
+    font-size:11px;
+    color:var(--cream-dim);
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  .meta-block .value{
+    font-size:1.6rem;
+    color:var(--cream);
+    font-weight:600;
+  }
+  .meta-block .value.accent{color:var(--amber);}
+
+  .cgpa-readout{
+    margin-top:54px;
+    display:flex;
+    align-items:baseline;
+    gap:18px;
+    border-top:1px solid var(--card-border);
+    padding-top:32px;
+  }
+  .cgpa-readout .big{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:clamp(3.5rem, 9vw, 6.5rem);
+    color:var(--amber);
+    line-height:1;
+  }
+  .cgpa-readout .cap{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--cream-dim);
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    max-width:220px;
+  }
+
+  /* search */
+  section.search-section{
+    padding:48px 6vw 0;
+  }
+  .search-box{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:6px;
+    display:flex;
+    align-items:center;
+    padding:14px 18px;
+    gap:12px;
+    max-width:560px;
+    transition:border-color .2s;
+  }
+  .search-box:focus-within{border-color:var(--amber);}
+  .search-box svg{flex-shrink:0; opacity:0.6;}
+  .search-box input{
+    background:none;
+    border:none;
+    outline:none;
+    color:var(--cream);
+    font-family:var(--mono);
+    font-size:14px;
+    width:100%;
+  }
+  .search-box input::placeholder{color:var(--cream-dim);}
+  .search-hint{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--cream-dim);
+    margin-top:10px;
+    letter-spacing:0.04em;
+  }
+
+  #searchResults{
+    margin-top:18px;
+    max-width:760px;
+    display:none;
+    flex-direction:column;
+    gap:8px;
+  }
+  #searchResults.active{display:flex;}
+  .result-row{
+    display:grid;
+    grid-template-columns:70px 1fr 90px 70px 60px;
+    gap:14px;
+    align-items:center;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-left:3px solid var(--amber);
+    border-radius:4px;
+    padding:12px 16px;
+    font-family:var(--mono);
+    font-size:13px;
+  }
+  .result-row .sem-tag{color:var(--amber); font-weight:600;}
+  .result-row .subj-name{color:var(--cream); font-family:var(--body);}
+  .result-row .grade{font-weight:600;}
+  .no-results{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--cream-dim);
+    padding:14px 0;
+  }
+
+  /* filmstrip */
+  .filmstrip-section{
+    padding:80px 0 100px;
+  }
+  .section-head{
+    padding:0 6vw;
+    margin-bottom:36px;
+  }
+  .section-head .eyebrow{margin-bottom:10px;}
+  .section-head h2{
+    font-family:var(--display);
+    font-size:clamp(1.6rem, 3vw, 2.2rem);
+    font-weight:600;
+  }
+  .filmstrip{
+    display:flex;
+    gap:0;
+    overflow-x:auto;
+    padding:0 6vw 24px;
+    scrollbar-width:thin;
+    scrollbar-color:var(--amber-dim) var(--bg-soft);
+  }
+  .filmstrip::-webkit-scrollbar{height:6px;}
+  .filmstrip::-webkit-scrollbar-thumb{background:var(--amber-dim); border-radius:3px;}
+
+  .frame{
+    flex:0 0 300px;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    margin-right:18px;
+    border-radius:4px;
+    overflow:hidden;
+    transition:border-color .2s, transform .2s;
+    scroll-snap-align:start;
+  }
+  .frame:hover{border-color:var(--amber); transform:translateY(-4px);}
+  .frame .frame-sprockets{
+    display:flex;
+    justify-content:space-around;
+    background:var(--bg-soft);
+    padding:6px 0;
+  }
+  .frame .frame-sprockets span{
+    width:7px; height:7px;
+    background:var(--bg);
+    border-radius:1px;
+  }
+  .frame-num{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--amber);
+    letter-spacing:0.1em;
+    padding:14px 18px 0;
+    text-transform:uppercase;
+  }
+  .frame-sgpa{
+    font-family:var(--display);
+    font-size:2.4rem;
+    font-weight:700;
+    padding:6px 18px 4px;
+    color:var(--cream);
+  }
+  .frame-sgpa .sub{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--cream-dim);
+    font-weight:400;
+  }
+  .frame-cgpa-line{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--cream-dim);
+    padding:0 18px 14px;
+  }
+  .frame-cgpa-line b{color:var(--amber);}
+  .frame-status{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:0 18px 14px;
+    color:var(--green);
+  }
+  .frame-subjects{
+    border-top:1px solid var(--card-border);
+    padding:14px 18px 18px;
+  }
+  .subj-line{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-size:12.5px;
+    padding:5px 0;
+  }
+  .subj-line .name{color:var(--cream-dim);}
+  .subj-line .grade-pill{
+    font-family:var(--mono);
+    font-weight:600;
+    flex-shrink:0;
+  }
+  .g-A,.g-Ap{color:var(--green);}
+  .g-B{color:#8FD6A8;}
+  .g-C{color:#E0C56B;}
+  .g-D,.g-P,.g-I{color:var(--cream-dim);}
+
+  /* trend bar */
+  .trend-section{
+    padding:0 6vw 90px;
+  }
+  .trend-bars{
+    display:flex;
+    align-items:flex-end;
+    gap:14px;
+    height:160px;
+    margin-top:28px;
+    border-bottom:1px solid var(--card-border);
+    padding-bottom:0;
+  }
+  .bar-col{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+  }
+  .bar{
+    width:100%;
+    max-width:46px;
+    background:linear-gradient(180deg, var(--amber), var(--amber-dim));
+    border-radius:3px 3px 0 0;
+  }
+  .bar-label{
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--cream-dim);
+  }
+  .bar-value{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--amber);
+    font-weight:600;
+  }
+
+  /* PDF section */
+  .pdf-section{
+    padding:0 6vw 100px;
+  }
+  .pdf-toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-top:10px;
+    margin-bottom:20px;
+  }
+  .pdf-note{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--cream-dim);
+    max-width:480px;
+  }
+  .pdf-download{
+    font-family:var(--mono);
+    font-size:13px;
+    font-weight:600;
+    color:var(--bg);
+    background:var(--amber);
+    padding:12px 20px;
+    border-radius:4px;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    flex-shrink:0;
+    transition:opacity .2s;
+  }
+  .pdf-download:hover{opacity:0.85;}
+  .pdf-frame-wrap{
+    border:1px solid var(--card-border);
+    border-radius:6px;
+    overflow:hidden;
+    background:var(--bg-soft);
+  }
+  .pdf-frame-wrap .frame-sprockets{margin:0;}
+  .pdf-frame-wrap iframe{
+    width:100%;
+    height:640px;
+    border:none;
+    display:block;
+  }
+  .pdf-fallback{
+    padding:40px;
+    text-align:center;
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--cream-dim);
+  }
+
+  footer{
+    padding:50px 6vw 60px;
+    border-top:1px solid var(--card-border);
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--cream-dim);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+
+  @media (max-width:640px){
+    .result-row{grid-template-columns:50px 1fr 60px; }
+    .result-row .credit-col{display:none;}
+    .hero-meta{gap:24px;}
+  }
+
+  :focus-visible{outline:2px solid var(--amber); outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">B.Tech · 3D Animation &amp; Graphics</div>
+  <h1>Pooja Kumari</h1>
+  <div class="role">Bihar Engineering University, Patna — B. P. Mandal College of Engineering, Madhepura</div>
+
+  <div class="hero-meta">
+    <div class="meta-block">
+      <div class="label">Registration No.</div>
+      <div class="value">22118128009</div>
+    </div>
+    <div class="meta-block">
+      <div class="label">Programme</div>
+      <div class="value">3D Animation &amp; Graphics</div>
+    </div>
+    <div class="meta-block">
+      <div class="label">Semesters Completed</div>
+      <div class="value accent">8 / 8</div>
+    </div>
+  </div>
+
+  <div class="cgpa-readout">
+    <div class="big">8.16</div>
+    <div class="cap">Final Cumulative CGPA across all eight semesters</div>
+  </div>
+</header>
+
+<section class="search-section">
+  <div class="search-box">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F5F1E8" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input id="searchInput" type="text" placeholder="Search any subject — e.g. Rendering, 3D Modelling, Cinematography...">
+  </div>
+  <div class="search-hint">Searches across all 8 semesters · theory + practical</div>
+  <div id="searchResults"></div>
+</section>
+
+<section class="filmstrip-section">
+  <div class="section-head">
+    <div class="eyebrow">Frame by frame</div>
+    <h2>Semester Timeline</h2>
+  </div>
+  <div class="filmstrip" id="filmstrip"></div>
+</section>
+
+<section class="trend-section">
+  <div class="section-head" style="padding:0;">
+    <div class="eyebrow">Output curve</div>
+    <h2>SGPA Progression</h2>
+  </div>
+  <div class="trend-bars" id="trendBars"></div>
+</section>
+
+<section class="pdf-section">
+  <div class="section-head" style="padding:0;">
+    <div class="eyebrow">Source material</div>
+    <h2>Official Result Sheets (PDF)</h2>
+  </div>
+  <div class="pdf-toolbar">
+    <div class="pdf-note">All 8 semester mark sheets, merged in order, as issued by Bihar Engineering University, Patna (web copy). Scroll within the viewer or download directly.</div>
+    <a class="pdf-download" href="Pooja_Kumari_Result_AllSemesters.pdf" download>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg>
+      Download PDF
+    </a>
+  </div>
+  <div class="pdf-frame-wrap">
+    <div class="frame-sprockets"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <iframe src="Pooja_Kumari_Result_AllSemesters.pdf" title="Pooja Kumari — full academic result, semesters 1 to 8">
+      <div class="pdf-fallback">Your browser can't preview embedded PDFs. <a href="Pooja_Kumari_Result_AllSemesters.pdf" download>Download the result PDF instead.</a></div>
+    </iframe>
+  </div>
+</section>
+
+<footer>
+  <span>Pooja Kumari — Academic Record, 2022–2026</span>
+  <span>Source: Bihar Engineering University, Patna (Official Web Copy)</span>
+</footer>
+
+<script>
+const data = [
+  {
+    sem: "I", label: "Semester 01", sgpa: 6.39, cgpa: 6.39, status: "PASS",
+    subjects: [
+      {name:"Chemistry", grade:"D"}, {name:"Programming for Problem Solving", grade:"P"},
+      {name:"Workshop Manufacturing Practices", grade:"C"}, {name:"English", grade:"P"},
+      {name:"Mathematics I", grade:"P"}, {name:"Chemistry Lab", grade:"B"},
+      {name:"Programming Lab", grade:"B"}, {name:"Workshop Lab", grade:"A"}, {name:"English Lab", grade:"A"}
+    ]
+  },
+  {
+    sem: "II", label: "Semester 02", sgpa: 6.43, cgpa: 6.41, status: "PASS",
+    subjects: [
+      {name:"Basic Electrical Engineering", grade:"P"}, {name:"Engineering Graphics & Design", grade:"P"},
+      {name:"Physics (Semiconductor Physics)", grade:"C"}, {name:"Mathematics II", grade:"P"},
+      {name:"Electrical Engineering Lab", grade:"D"}, {name:"Engineering Graphics Lab", grade:"Ap"},
+      {name:"Physics Lab", grade:"A"}
+    ]
+  },
+  {
+    sem: "III", label: "Semester 03", sgpa: 7.93, cgpa: 6.98, status: "PASS",
+    subjects: [
+      {name:"Drawing and Sketching", grade:"A"}, {name:"Fundamentals of Multimedia", grade:"C"},
+      {name:"Basics of Communication", grade:"B"}, {name:"Illustration & Image Processing", grade:"C"},
+      {name:"Python Programming", grade:"C"}, {name:"Drawing & Sketching Lab", grade:"A"},
+      {name:"Multimedia Lab", grade:"Ap"}, {name:"Illustration Lab", grade:"B"}, {name:"Python Lab", grade:"B"}
+    ]
+  },
+  {
+    sem: "IV", label: "Semester 04", sgpa: 8.10, cgpa: 7.27, status: "PASS",
+    subjects: [
+      {name:"Computer Graphics", grade:"B"}, {name:"2D Animation & Motion Graphics", grade:"B"},
+      {name:"Design & Analysis of Algorithm", grade:"C"}, {name:"Operating System", grade:"B"},
+      {name:"HR Development & Org. Behaviour", grade:"C"}, {name:"Computer Graphics Lab", grade:"A"},
+      {name:"2D Animation Lab", grade:"Ap"}, {name:"Operating System Lab", grade:"A"}
+    ]
+  },
+  {
+    sem: "V", label: "Semester 05", sgpa: 9.44, cgpa: 7.74, status: "PASS",
+    subjects: [
+      {name:"Design Thinking", grade:"B"}, {name:"3D Modelling", grade:"A"},
+      {name:"3D Character Design & Sculpting (Z-Brush)", grade:"A"}, {name:"3D Texturing", grade:"Ap"},
+      {name:"3D Modelling Lab", grade:"Ap"}, {name:"3D Texturing Lab", grade:"Ap"},
+      {name:"Summer Internship I", grade:"Ap"}
+    ]
+  },
+  {
+    sem: "VI", label: "Semester 06", sgpa: 8.80, cgpa: 7.91, status: "PASS",
+    subjects: [
+      {name:"AR VR Technology", grade:"Ap"}, {name:"3D Rigging", grade:"C"},
+      {name:"3D Lighting", grade:"A"}, {name:"Character Animation", grade:"A"},
+      {name:"Game Development", grade:"A"}, {name:"3D Rigging Lab", grade:"Ap"},
+      {name:"3D Lighting Lab", grade:"Ap"}, {name:"Character Animation Lab", grade:"Ap"},
+      {name:"NPTEL Courses I Lab", grade:"C"}
+    ]
+  },
+  {
+    sem: "VII", label: "Semester 07", sgpa: 8.87, cgpa: 8.06, status: "PASS *",
+    note: "* Regulation-adjusted — NPTEL Course-II not reflected pending reattempt",
+    subjects: [
+      {name:"Cinematography (Photography, Videography)", grade:"A"}, {name:"Rendering", grade:"A"},
+      {name:"Cinematography Lab", grade:"Ap"}, {name:"Summer Internship II", grade:"Ap"},
+      {name:"Project", grade:"Ap"}
+    ]
+  },
+  {
+    sem: "VIII", label: "Semester 08", sgpa: 9.00, cgpa: 8.16, status: "PASS",
+    subjects: [
+      {name:"Digital Marketing", grade:"C"}, {name:"Audio and Video Production", grade:"A"},
+      {name:"Video Editing (Premiere, FCP)", grade:"A"}, {name:"Digital Compositing (Fusion & Nuke)", grade:"A"},
+      {name:"Project II", grade:"Ap"}
+    ]
+  }
+];
+
+function gradeClass(g){
+  if(g==="A+") return "g-Ap";
+  if(g==="A") return "g-A";
+  if(g==="B") return "g-B";
+  if(g==="C") return "g-C";
+  return "g-D";
+}
+
+const filmstrip = document.getElementById('filmstrip');
+data.forEach(sem => {
+  const frame = document.createElement('div');
+  frame.className = 'frame';
+  const sprockets = `<div class="frame-sprockets">${'<span></span>'.repeat(8)}</div>`;
+  const subjHTML = sem.subjects.map(s => `
+    <div class="subj-line">
+      <span class="name">${s.name}</span>
+      <span class="grade-pill ${gradeClass(s.grade)}">${s.grade.replace('Ap','A+')}</span>
+    </div>`).join('');
+
+  frame.innerHTML = `
+    ${sprockets}
+    <div class="frame-num">${sem.label}</div>
+    <div class="frame-sgpa">${sem.sgpa.toFixed(2)}<span class="sub"> SGPA</span></div>
+    <div class="frame-cgpa-line">Cumulative CGPA: <b>${sem.cgpa.toFixed(2)}</b></div>
+    <div class="frame-status">${sem.status}</div>
+    <div class="frame-subjects">${subjHTML}</div>
+    ${sprockets}
+  `;
+  filmstrip.appendChild(frame);
+});
+
+// trend bars
+const trendBars = document.getElementById('trendBars');
+const maxSgpa = 10;
+data.forEach(sem => {
+  const col = document.createElement('div');
+  col.className = 'bar-col';
+  const h = (sem.sgpa / maxSgpa) * 140;
+  col.innerHTML = `
+    <span class="bar-value">${sem.sgpa.toFixed(2)}</span>
+    <div class="bar" style="height:${h}px"></div>
+    <span class="bar-label">${sem.sem}</span>
+  `;
+  trendBars.appendChild(col);
+});
+
+// search
+const allSubjects = [];
+data.forEach(sem => {
+  sem.subjects.forEach(s => {
+    allSubjects.push({sem: sem.sem, label: sem.label, name: s.name, grade: s.grade});
+  });
+});
+
+const input = document.getElementById('searchInput');
+const resultsBox = document.getElementById('searchResults');
+
+input.addEventListener('input', () => {
+  const q = input.value.trim().toLowerCase();
+  if(q.length === 0){
+    resultsBox.classList.remove('active');
+    resultsBox.innerHTML = '';
+    return;
+  }
+  const matches = allSubjects.filter(s => s.name.toLowerCase().includes(q));
+  resultsBox.classList.add('active');
+  if(matches.length === 0){
+    resultsBox.innerHTML = '<div class="no-results">No subject matches "' + input.value + '"</div>';
+    return;
+  }
+  resultsBox.innerHTML = matches.map(m => `
+    <div class="result-row">
+      <span class="sem-tag">SEM ${m.sem}</span>
+      <span class="subj-name">${m.name}</span>
+      <span></span>
+      <span class="grade grade-pill ${gradeClass(m.grade)}">${m.grade.replace('Ap','A+')}</span>
+      <span></span>
+    </div>
+  `).join('');
+});
+</script>
+
+</body>
+</html>
